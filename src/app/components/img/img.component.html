@@ -1,4 +1,4 @@
-<img [src]="img" width="200px" *ngIf="img; else elseImg">
+<img [src]="img" width="200"  (load)="imgLoaded()" (error)="imgError()" *ngIf="img; else elseImg">
 <ng-template #elseImg >
-  <img src="https://electronicssoftware.net/wp-content/uploads/user.png" width="200" >
+  <img [src]="imageDefault" width="200" >
 </ng-template>
