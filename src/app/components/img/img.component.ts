@@ -6,9 +6,17 @@ import { Component, OnInit,Input,Output,EventEmitter, OnChanges, SimpleChanges, 
   styleUrls: ['./img.component.scss']
 })
 export class ImgComponent implements OnInit, OnChanges, AfterViewInit,OnDestroy {
-  @Input() img: string = "";
+  img: string = ''
+  @Input('img')
+  set changeImg(newImg: string){
+    this.img = newImg;
+    console.log("change just image =>",this.img)
+    //code
+  }
   @Output() loaded = new EventEmitter<string>();
   imageDefault = 'https://www.m2crowd.com/core/i/placeholder.png';
+  counter:number = 0;
+  counterFn:number|undefined;
   constructor() {
     //before render
     //No async -- once time
@@ -25,6 +33,10 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit,OnDestroy 
     //before render
     //async - fetch -- one time
     console.log("ngOnInit",'imgValue =>',this.img);
+    this.counterFn = window.setInterval(()=>{
+      this.counter +=1;
+      console.log('run counter')
+    },1000);
   }
 
   ngAfterViewInit(): void {
@@ -35,6 +47,7 @@ export class ImgComponent implements OnInit, OnChanges, AfterViewInit,OnDestroy 
 
   ngOnDestroy(){
     console.log("ngOnDestroy",'imgValue =>',this.img)
+    window.clearInterval(this.counterFn)
   }
 
   imgError(){
