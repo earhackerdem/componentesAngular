@@ -6,10 +6,14 @@
   Today: {{ today | date:'short' }}
 </p>
 <p>
-  Otra fecha: {{ date | date:'yyyy.dd.MM' }}
+  Today: {{ date | timeAgo }}
 </p>
 <p>
-  {{ 'hOLA MensAje'     | uppercase}}
+  Otra fecha: {{ date | date:'yyyy.dd.MM' }}
+</p>
+
+<p>
+  {{ 'Hello my love, now kiss me like you miss me'     | vowels}}
 </p>
 <div class="products--grid">
   <app-product
