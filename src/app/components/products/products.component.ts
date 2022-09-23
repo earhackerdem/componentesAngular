@@ -12,7 +12,8 @@ export class ProductsComponent implements OnInit {
   myShoppingCart: Product[] = [];
   total: number = 0;
   products: Product[] = [];
-
+  today = new Date();
+  date = new Date(2022,10,10);
 
   constructor(private storeService: StoreService, private productService: ProductsService) {
     this.myShoppingCart = this.storeService.getShoppingCart();
