@@ -9,11 +9,9 @@ import { Product } from './models/product.model';
 export class AppComponent {
   imgParent = '';
   showImage = true;
-  
+
 
   onLoaded(img: string){
-    console.log("log padre",img);
-
   }
 
   toggleImg(){

@@ -10,6 +10,7 @@
 
 <div class="product-detail" [class.active]="showProductDetail">
   <div *ngIf="productChosen">
+    <button (click)="toggleProductDetail()" >Close</button>
     <h1>{{ productChosen.title }}</h1>
     <swiper
       [slidesPerView]="1">
@@ -18,6 +19,8 @@
       </ng-template>
     </swiper>
     <p>{{ productChosen.description }}</p>
-    <button (click)="toggleProductDetail()" >Close</button>
+    <button (click)="updateProduct()">Editar</button>
+    <button (click)="addToShoppingCart()"> Add cart</button>
+
   </div>
 </div>

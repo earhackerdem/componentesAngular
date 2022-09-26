@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { StoreService } from 'src/app/services/store.service';
 import { ProductsService } from 'src/app/services/products.service';
-import { CreateProductDTO } from 'src/app/models/product.model';
+import { CreateProductDTO, UpdateProductDTO } from 'src/app/models/product.model';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -44,6 +44,11 @@ export class ProductsComponent implements OnInit {
 
   onAddToShoppingCart(product: Product) {
     this.storeService.addProduct(product);
+    this.total = this.storeService.getTotal();
+  }
+
+  addToShoppingCart(){
+    this.storeService.addProduct(this.productChosen);
     this.total = this.storeService.getTotal();
   }
 
@@ -91,6 +96,20 @@ export class ProductsComponent implements OnInit {
     .subscribe(data =>{
      this.products.unshift(data);
     });
+  }
+
+  updateProduct(){
+    const changes: UpdateProductDTO = {
+      title:'change title',
+    }
+    const id = this.productChosen.id;
+
+    this.productService.update(id,changes)
+    .subscribe( data =>{
+      const productIndex = this.products.findIndex( item => item.id == this.productChosen.id);
+      this.products[productIndex] = data;
+      this.productChosen = data;
+    })
   }
 
 

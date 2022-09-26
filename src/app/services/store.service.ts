@@ -17,7 +17,6 @@ export class StoreService {
   addProduct(product:Product){
     this.myShoppingCart.push(product);
     this.myCart.next(this.myShoppingCart);
-
   }
 
   getShoppingCart() :Product[]{
