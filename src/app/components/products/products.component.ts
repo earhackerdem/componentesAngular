@@ -12,6 +12,7 @@ export class ProductsComponent implements OnInit {
   myShoppingCart: Product[] = [];
   total: number = 0;
   products: Product[] = [];
+  showProductDetail: boolean = false;
   today = new Date();
   date = new Date(2012,10,10);
 
@@ -31,6 +32,16 @@ export class ProductsComponent implements OnInit {
     this.total = this.storeService.getTotal();
   }
 
+  toggleProductDetail(){
+    this.showProductDetail = !this.showProductDetail;
+  }
+
+  onShowDetails(id:string){
+    this.productService.getProduct(id)
+    .subscribe(data => {
+      console.log("product",data);
+    });
+  }
 
 
 }
