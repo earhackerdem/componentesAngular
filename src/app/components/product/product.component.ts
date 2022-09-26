@@ -12,10 +12,14 @@ export class ProductComponent{
   @Input() product: Product = {
     id: '',
     price:0,
-    image:'',
+    images:[],
     title:'',
     description:'',
-    category:''
+    category:{
+      'id':'0',
+      'name':'',
+      'typeImg':''
+    }
   };
 
   @Output() addedProduct = new EventEmitter<Product>();
