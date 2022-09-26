@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { StoreService } from 'src/app/services/store.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { CreateProductDTO } from 'src/app/models/product.model';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -74,6 +75,21 @@ export class ProductsComponent implements OnInit {
         this.toggleProductDetail();
       }
 
+    });
+  }
+
+  createNewProduct(){
+    const product:CreateProductDTO = {
+      title: 'Nuevo producto',
+      description:'Descripción del producto',
+      price : 3500,
+      images:[`https://placeimg.com/640/480/any?random=$%7BMath.random()%7D`],
+      categoryId:2,
+
+    }
+    this.productService.create(product)
+    .subscribe(data =>{
+     this.products.unshift(data);
     });
   }
 
