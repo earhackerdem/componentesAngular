@@ -13,6 +13,20 @@ export class ProductsComponent implements OnInit {
   total: number = 0;
   products: Product[] = [];
   showProductDetail: boolean = false;
+  productChosen: Product = {
+    id:'',
+    title: '',
+    price: 0,
+    images : [],
+    category :{
+      'id': '',
+      'name':'',
+      typeImg: ''
+    },
+    description:'',
+
+
+  };
   today = new Date();
   date = new Date(2012,10,10);
 
@@ -37,9 +51,29 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetails(id:string){
+    //en caso de que den dos veces al botón solo ocultara los detalles(para no ir a darle al botón de cerrar)
+    if(this.productChosen.id != '' && this.productChosen.id == id && this.showProductDetail==true){
+      this.showProductDetail = false;
+      return;
+    }
+
+    //en caso de que seleccionen el mismo producto ya no hay necesidad de hacer la petición de nuevo y solo vuelve a mostrar el panel
+    if(this.productChosen.id != '' && this.productChosen.id == id && this.showProductDetail==false){
+      this.showProductDetail = true;
+      return;
+    }
+    //en caso que le den al botón de ver detalles mientras ya están abiertos los de un producto diferente cierra el panel de detalles
+    if(this.productChosen.id != '' && this.productChosen.id != id && this.showProductDetail==true){
+      this.showProductDetail = false;
+    }
+
     this.productService.getProduct(id)
     .subscribe(data => {
-      console.log("product",data);
+      this.productChosen = data;
+      if(!this.showProductDetail){
+        this.toggleProductDetail();
+      }
+
     });
   }
 
