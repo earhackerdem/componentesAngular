@@ -28,15 +28,15 @@ export class ProductsComponent implements OnInit {
 
 
   };
-  today = new Date();
-  date = new Date(2012,10,10);
+  limit: number = 10;
+  offset: number = 0;
 
   constructor(private storeService: StoreService, private productService: ProductsService) {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
   ngOnInit(): void {
-    this.productService.getAllProducts()
+    this.productService.getProductByPage(10,0)
       .subscribe(data => {
        this.products = data;
       })
@@ -121,6 +121,14 @@ export class ProductsComponent implements OnInit {
       this.showProductDetail = false;
 
     });
+  }
+
+  loadMore(){
+    this.productService.getProductByPage(this.limit,this.offset)
+    .subscribe(data => {
+      this.products = this.products.concat(data);
+      this.offset += this.limit;
+    })
   }
 
 
