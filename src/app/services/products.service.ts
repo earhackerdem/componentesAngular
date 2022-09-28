@@ -8,7 +8,7 @@ import { retry } from 'rxjs/operators';
 })
 export class ProductsService {
 
-  private apiUrl = "https://young-sands-07814.therokuapp.com/api/products";
+  private apiUrl = "api/products";
 
   constructor(
     private http: HttpClient
