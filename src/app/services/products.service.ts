@@ -4,7 +4,7 @@ import { Product, UpdateProductDTO } from '../models/product.model';
 import { CreateProductDTO } from '../models/product.model';
 import { catchError, retry, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { throwError } from 'rxjs';
+import { throwError, zip } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -49,6 +49,13 @@ export class ProductsService {
         }
         return throwError('Ups algo salio mal')
       })
+    );
+  }
+
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO ){
+    return zip(
+      this.getProduct(id),
+      this.update(id,dto)
     );
   }
 
