@@ -76,16 +76,10 @@ export class ProductsComponent implements OnInit {
     }
 
     this.productService.getProduct(id)
-    .subscribe(data => {
-      this.productChosen = data;
-      if(!this.showProductDetail){
-        this.toggleProductDetail();
-      }
-      this.statusDetail = 'success';
-
-    }, errorMessage=>{
-      window.alert(errorMessage);
-      this.statusDetail = 'error';
+    .subscribe({
+      next: (v) => this.showDetailOk(v),
+      error: (e) => this.showDetailError(e),
+      complete: () => console.info()
     });
   }
 
@@ -135,6 +129,19 @@ export class ProductsComponent implements OnInit {
       this.products = this.products.concat(data);
       this.offset += this.limit;
     })
+  }
+
+  showDetailOk(data: Product){
+    this.productChosen = data;
+    if(!this.showProductDetail){
+      this.toggleProductDetail();
+    }
+    this.statusDetail = 'success';
+  }
+
+  showDetailError(errorMessage:string){
+    window.alert(errorMessage);
+    this.statusDetail = 'error';
   }
 
 
