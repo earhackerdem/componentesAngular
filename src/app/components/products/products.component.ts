@@ -30,6 +30,7 @@ export class ProductsComponent implements OnInit {
   };
   limit: number = 10;
   offset: number = 0;
+  statusDetail: 'loading'|'success'| 'error' | 'init' = 'init';
 
   constructor(private storeService: StoreService, private productService: ProductsService) {
     this.myShoppingCart = this.storeService.getShoppingCart();
@@ -57,6 +58,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetails(id:string){
+    this.statusDetail = 'loading';
     //en caso de que den dos veces al botón solo ocultara los detalles(para no ir a darle al botón de cerrar)
     if(this.productChosen.id != '' && this.productChosen.id == id && this.showProductDetail==true){
       this.showProductDetail = false;
@@ -79,7 +81,11 @@ export class ProductsComponent implements OnInit {
       if(!this.showProductDetail){
         this.toggleProductDetail();
       }
+      this.statusDetail = 'success';
 
+    }, errorMessage=>{
+      window.alert(errorMessage);
+      this.statusDetail = 'error';
     });
   }
 
