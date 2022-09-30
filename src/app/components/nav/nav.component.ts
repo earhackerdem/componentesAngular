@@ -28,15 +28,14 @@ export class NavComponent implements OnInit {
   }
 
   login(){
-    this.authService.login('earvin@mail.com','password')
-    .subscribe( rta => {
-      this.token = rta.access_token;
-      this.getProfile();
+    this.authService.loginAndGet('earvin@mail.com','password')
+    .subscribe( user => {
+      this.profile = user;
     });
   }
 
   getProfile(){
-    this.authService.profile(this.token)
+    this.authService.profile()
     .subscribe(user => {
       this.profile = user;
 
@@ -48,7 +47,7 @@ export class NavComponent implements OnInit {
     .pipe(
       switchMap(rta => {
         this.token = rta.access_token;
-        return this.authService.profile(this.token);
+        return this.authService.profile();
       })
     )
     .subscribe(user => this.profile = user );
