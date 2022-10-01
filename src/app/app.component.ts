@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FilesService } from './services/files.service';
 import { UsersService } from './services/users.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent {
   token = '';
   email = '';
 
-  constructor(private userService: UsersService){}
+  constructor(private userService: UsersService, private fileService: FilesService){}
 
   onLoaded(img: string){
   }
@@ -32,4 +33,8 @@ export class AppComponent {
     });
   }
 
+  downloadPDF(){
+    this.fileService.getFile('my.pdf','https://young-sands-07814.herokuapp.com/api/files/dummy.pdf','application.pdf')
+    .subscribe()
+  }
 }
