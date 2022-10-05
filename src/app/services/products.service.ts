@@ -11,61 +11,73 @@ import { checkTime } from '../interceptors/time.interceptor';
 })
 export class ProductsService {
 
-  private apiUrl = `${environment.API_URL}/api/products`;
+  private apiUrl = `${environment.API_URL}/api`;
 
   constructor(
     private http: HttpClient
   ) { }
+
+  getByCategory(categoryId: string, limit?: number, offset?: number) {
+    let params = new HttpParams();
+    const temp_limit = limit as number;
+    const temp_offset = offset as number;
+
+    if (temp_limit?.toString().length > 0 && temp_offset?.toString().length > 0) {
+      params = params.set('limit', temp_limit);
+      params = params.set('offset', temp_offset);
+    }
+    return this.http.get<Product[]>(`${this.apiUrl}/categories/${categoryId}/products`, { params })
+  }
 
   getAllProducts(limit?: number, offset?: number) {
     let params = new HttpParams();
     const temp_limit = limit as number;
     const temp_offset = offset as number;
 
-    if(temp_limit?.toString().length > 0 && temp_offset?.toString().length > 0) {
+    if (temp_limit?.toString().length > 0 && temp_offset?.toString().length > 0) {
       params = params.set('limit', temp_limit);
       params = params.set('offset', temp_offset);
     }
-    return this.http.get<Product[]>(this.apiUrl,{ params, context: checkTime() })
-    .pipe(
-      retry(3),
-      map(products => products.map(item => {
-        return {
-          ...item,
-          taxes: .19 * item.price
-        }
-      }))
-    );
+    return this.http.get<Product[]>(`${this.apiUrl}/products`, { params, context: checkTime() })
+      .pipe(
+        retry(3),
+        map(products => products.map(item => {
+          return {
+            ...item,
+            taxes: .19 * item.price
+          }
+        }))
+      );
   }
 
   getProduct(id: string) {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`)
-    .pipe(
-      catchError((error:HttpErrorResponse)=>{
-        if(error.status=== HttpStatusCode.Conflict){
-          return throwError('Algo esta fallando en el server');
-        }
-        if(error.status===HttpStatusCode.NotFound){
-          return throwError('El producto no existe');
-        }
-        if(error.status===HttpStatusCode.Unauthorized){
-          return throwError('No estas permitido');
-        }
-        return throwError('Ups algo salio mal')
-      })
-    );
+    return this.http.get<Product>(`${this.apiUrl}/products/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.Conflict) {
+            return throwError('Algo esta fallando en el server');
+          }
+          if (error.status === HttpStatusCode.NotFound) {
+            return throwError('El producto no existe');
+          }
+          if (error.status === HttpStatusCode.Unauthorized) {
+            return throwError('No estas permitido');
+          }
+          return throwError('Ups algo salio mal')
+        })
+      );
   }
 
-  fetchReadAndUpdate(id: string, dto: UpdateProductDTO ){
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO) {
     return zip(
       this.getProduct(id),
-      this.update(id,dto)
+      this.update(id, dto)
     );
   }
 
-  getProductByPage(limit: number, offset: number){
-    return this.http.get<Product[]>(`${this.apiUrl}`,{
-      params:{ limit, offset }, context: checkTime()
+  getProductByPage(limit: number, offset: number) {
+    return this.http.get<Product[]>(`${this.apiUrl}/products`, {
+      params: { limit, offset }, context: checkTime()
     }).pipe(
       retry(3),
       map(products => products.map(item => {
@@ -78,14 +90,14 @@ export class ProductsService {
   }
 
   create(dto: CreateProductDTO) {
-    return this.http.post<Product>(this.apiUrl, dto);
+    return this.http.post<Product>(`${this.apiUrl}/products`, dto);
   }
 
-  update(id:string, dto: UpdateProductDTO){
-    return  this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
+  update(id: string, dto: UpdateProductDTO) {
+    return this.http.put<Product>(`${this.apiUrl}/products/${id}`, dto);
   }
 
-  delete(id:string){
-    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+  delete(id: string) {
+    return this.http.delete<boolean>(`${this.apiUrl}/products/${id}`);
   }
 }
