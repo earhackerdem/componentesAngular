@@ -26,7 +26,6 @@ export class ProductsComponent {
     category :{
       'id': '',
       'name':'',
-      typeImg: ''
     },
     description:'',
 

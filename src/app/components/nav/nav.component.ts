@@ -3,6 +3,8 @@ import { StoreService } from 'src/app/services/store.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.model';
 import { switchMap } from 'rxjs';
+import { CategoriesService } from 'src/app/services/categories.service';
+import { Category } from 'src/app/models/category.models';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -14,13 +16,15 @@ export class NavComponent implements OnInit {
   counter = 0;
   token = '';
   profile: User | null = null;
+  categories: Category[] = [];
 
-  constructor(private storeService: StoreService, private authService: AuthService) { }
+  constructor(private storeService: StoreService, private authService: AuthService, private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
     this.storeService.myCart$.subscribe(products =>{
       this.counter = products.length;
-    })
+    });
+    this.getAllCategories();
   }
 
   toggleMenu() {
@@ -51,6 +55,13 @@ export class NavComponent implements OnInit {
       })
     )
     .subscribe(user => this.profile = user );
+  }
+
+  getAllCategories(){
+    this.categoriesService.getAll()
+    .subscribe(data => {
+      this.categories = data;
+    });
   }
 
 }
