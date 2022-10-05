@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/models/product.model';
 import { StoreService } from 'src/app/services/store.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { CreateProductDTO, UpdateProductDTO } from 'src/app/models/product.model';
-import { zip } from 'rxjs';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
 
   myShoppingCart: Product[] = [];
   total: number = 0;
-  products: Product[] = [];
+  @Input() products: Product[] = [];
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() onLoadMore = new EventEmitter<string>();
   showProductDetail: boolean = false;
   productChosen: Product = {
     id:'',
@@ -30,20 +32,18 @@ export class ProductsComponent implements OnInit {
 
 
   };
-  limit: number = 10;
-  offset: number = 0;
+
   statusDetail: 'loading'|'success'| 'error' | 'init' = 'init';
 
   constructor(private storeService: StoreService, private productService: ProductsService) {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
-  ngOnInit(): void {
-    this.productService.getProductByPage(10,0)
-      .subscribe(data => {
-       this.products = data;
-      })
+  loadMore(){
+    this.onLoadMore.emit();
   }
+
+
 
   onAddToShoppingCart(product: Product) {
     this.storeService.addProduct(product);
@@ -144,13 +144,13 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  loadMore(){
-    this.productService.getProductByPage(this.limit,this.offset)
-    .subscribe(data => {
-      this.products = this.products.concat(data);
-      this.offset += this.limit;
-    })
-  }
+  // loadMore(){
+  //   this.productService.getProductByPage(this.limit,this.offset)
+  //   .subscribe(data => {
+  //     this.products = this.products.concat(data);
+  //     this.offset += this.limit;
+  //   })
+  // }
 
   showDetailOk(data: Product){
     this.productChosen = data;

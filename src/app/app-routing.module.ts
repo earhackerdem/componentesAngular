@@ -12,6 +12,11 @@ import { MyCartComponent } from './pages/my-cart/my-cart.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
     path: 'home',
     component: HomeComponent
   },
