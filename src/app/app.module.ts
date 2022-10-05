@@ -24,6 +24,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { MyCartComponent } from './pages/my-cart/my-cart.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +43,8 @@ import { MyCartComponent } from './pages/my-cart/my-cart.component';
     RegisterComponent,
     RecoveryComponent,
     ProfileComponent,
-    MyCartComponent
+    MyCartComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
