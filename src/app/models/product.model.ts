@@ -1,4 +1,4 @@
-import { ProductComponent } from "../components/product/product.component";
+import { ProductComponent } from "../website/components/product/product.component";
 import { Category } from "./category.models";
 
 export interface Product{
