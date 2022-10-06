@@ -5,7 +5,7 @@ import { Product } from 'src/app/models/product.model';
 import { switchMap } from 'rxjs';
 @Component({
   selector: 'app-category',
-  template: `<app-products [products]="products" (onLoadMore)="loadMore()"> </app-products>`,
+  template: `<app-products [productId]="productId" [products]="products" (onLoadMore)="loadMore()"> </app-products>`,
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
@@ -14,6 +14,7 @@ export class CategoryComponent implements OnInit {
   limit = 10;
   offset = 0;
   products: Product[] = [];
+  productId: string | null = null;
 
   constructor(private route: ActivatedRoute, private productService: ProductsService) { }
 
@@ -49,6 +50,9 @@ export class CategoryComponent implements OnInit {
         this.products = data;
 
       });
+      this.route.queryParamMap.subscribe(params => {
+        this.productId = params.get('product');
+      })
   }
 
   loadMore(): void {

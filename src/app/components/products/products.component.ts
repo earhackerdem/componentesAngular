@@ -15,6 +15,12 @@ export class ProductsComponent {
   myShoppingCart: Product[] = [];
   total: number = 0;
   @Input() products: Product[] = [];
+  // @Input() productId: string | null = null;
+  @Input() set productId(id: string | null){
+    if(id){
+      this.onShowDetails(id);
+    }
+  }
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onLoadMore = new EventEmitter<string>();
   showProductDetail: boolean = false;
@@ -60,21 +66,10 @@ export class ProductsComponent {
 
   onShowDetails(id:string){
     this.statusDetail = 'loading';
-    //en caso de que den dos veces al botón solo ocultara los detalles(para no ir a darle al botón de cerrar)
-    if(this.productChosen.id != '' && this.productChosen.id == id && this.showProductDetail==true){
-      this.showProductDetail = false;
-      return;
+    if(!this.showProductDetail){
+      this.showProductDetail = true;
     }
 
-    //en caso de que seleccionen el mismo producto ya no hay necesidad de hacer la petición de nuevo y solo vuelve a mostrar el panel
-    if(this.productChosen.id != '' && this.productChosen.id == id && this.showProductDetail==false){
-      this.showProductDetail = true;
-      return;
-    }
-    //en caso que le den al botón de ver detalles mientras ya están abiertos los de un producto diferente cierra el panel de detalles
-    if(this.productChosen.id != '' && this.productChosen.id != id && this.showProductDetail==true){
-      this.showProductDetail = false;
-    }
 
     this.productService.getProduct(id)
     .subscribe({
