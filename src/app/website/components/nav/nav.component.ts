@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StoreService } from 'src/app/services/store.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.model';
@@ -18,10 +19,15 @@ export class NavComponent implements OnInit {
   profile: User | null = null;
   categories: Category[] = [];
 
-  constructor(private storeService: StoreService, private authService: AuthService, private categoriesService: CategoriesService) { }
+  constructor(
+    private storeService: StoreService,
+    private authService: AuthService,
+    private categoriesService: CategoriesService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.storeService.myCart$.subscribe(products =>{
+    this.storeService.myCart$.subscribe(products => {
       this.counter = products.length;
     });
     this.getAllCategories();
@@ -31,37 +37,43 @@ export class NavComponent implements OnInit {
     this.activeMenu = !this.activeMenu;
   }
 
-  login(){
-    this.authService.loginAndGet('earvin@mail.com','password')
-    .subscribe( user => {
-      this.profile = user;
-    });
+  login() {
+    this.authService.loginAndGet('earvin@mail.com', 'password')
+      .subscribe(user => {
+        this.profile = user;
+      });
   }
 
-  getProfile(){
+  getProfile() {
     this.authService.profile()
-    .subscribe(user => {
-      this.profile = user;
+      .subscribe(user => {
+        this.profile = user;
 
-    })
-  }
-
-  loginAndGet(){
-    this.authService.login('earvin@mail.com','password')
-    .pipe(
-      switchMap(rta => {
-        this.token = rta.access_token;
-        return this.authService.profile();
       })
-    )
-    .subscribe(user => this.profile = user );
   }
 
-  getAllCategories(){
+  loginAndGet() {
+    this.authService.login('earvin@mail.com', 'password')
+      .pipe(
+        switchMap(rta => {
+          this.token = rta.access_token;
+          return this.authService.profile();
+        })
+      )
+      .subscribe(user => this.profile = user);
+  }
+
+  getAllCategories() {
     this.categoriesService.getAll()
-    .subscribe(data => {
-      this.categories = data;
-    });
+      .subscribe(data => {
+        this.categories = data;
+      });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.profile = null;
+    this.router.navigate(['/home']);
   }
 
 }
