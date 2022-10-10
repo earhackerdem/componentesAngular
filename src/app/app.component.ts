@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     const token = this.tokenService.getToken();
     if(token){
       this.authService.profile()
-      .subscribe()
+      .subscribe(user=>console.log(user))
     }
   }
 
@@ -40,9 +40,9 @@ export class AppComponent implements OnInit {
   createUser() {
     this.userService.create({
       name: "Earvin",
-      email: "earvin@mail.com",
+      email: "earvin@gmail.com",
       password: "password",
-      // role: 'customer'
+      role: 'customer'
     })
       .subscribe(rta => {
         console.log(rta)

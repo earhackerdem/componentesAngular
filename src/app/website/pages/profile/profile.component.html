@@ -2,5 +2,6 @@
   <h1>My profile</h1>
   <p>Nombre: {{ user.name }}</p>
   <p>Email: {{ user.email }}</p>
-  <!-- <p>Role: {{ user.role }}</p> -->
+  <p>Role: {{ user.role }}</p>
+  <a *ngIf="user.role==='admin'" routerLink="/cms">Ir al CMS</a>
 </div>

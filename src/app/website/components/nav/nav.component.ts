@@ -42,7 +42,7 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.loginAndGet('earvin@mail.com', 'password')
+    this.authService.loginAndGet('eladmin@mail.com', 'password')
       .subscribe(() => {
         this.router.navigate(['/profile']);
       });
@@ -57,10 +57,11 @@ export class NavComponent implements OnInit {
   }
 
   loginAndGet() {
-    this.authService.login('earvin@mail.com', 'password')
+    this.authService.login('eladmin@mail.com', 'password')
       .pipe(
         switchMap(rta => {
           this.token = rta.access_token;
+          console.log(this.token)
           return this.authService.profile();
         })
       )
