@@ -10,6 +10,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { MyCartComponent } from './pages/my-cart/my-cart.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { ExitGuard } from '../guards/exit.guard';
 const routes: Routes = [
   {
     path: '',
@@ -54,6 +55,7 @@ const routes: Routes = [
       },
       {
         path: 'register',
+        canDeactivate: [ExitGuard],
         component: RegisterComponent
 
       },
